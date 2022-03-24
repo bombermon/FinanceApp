@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1077147152829",
+    "firebase_url": "https://financeappcontroller-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "financeappcontroller",
+    "storage_bucket": "financeappcontroller.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077147152829:android:ff66fe6b5d716300c9e2d4",
+        "android_client_info": {
+          "package_name": "com.veselovski.financeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1077147152829-v5quao3jrt8h2u34l0gkf075smg9555g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.veselovski.financeapp",
+            "certificate_hash": "22172e638c0e6f420c07e8e2547f10020a8a0a96"
+          }
+        },
+        {
+          "client_id": "1077147152829-o1tianc6f4m02lfmau4cmbmopcgkedud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBptkAhl_0lamEiSwTPHSQMLV6r9jQ1Ip8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1077147152829-o1tianc6f4m02lfmau4cmbmopcgkedud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
