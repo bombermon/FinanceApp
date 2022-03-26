@@ -12,19 +12,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#808080"
-            android:elevation="4dp"/>
+
 
 
         <TextView
             android:id="@+id/totalAmountSpentTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Todays spending: $0"
+            android:text="Список операций"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#000"

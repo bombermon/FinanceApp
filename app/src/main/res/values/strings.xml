@@ -2,10 +2,10 @@
     <string name="app_name">FinanceApp</string>
 
     <string-array name="items">
-        <item>select item</item>
-        <item>Transport</item>
-        <item>Food</item>
-        <item>Entertainment</item>
-        <item>Other</item>
+        <item>Выберите категорию</item>
+        <item>Еда</item>
+        <item>Транспорт</item>
+        <item>Развлечение</item>
+        <item>Другое</item>
     </string-array>
 </resources>
