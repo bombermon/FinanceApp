@@ -25,11 +25,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+
+
+
+
 public class TodayItemsAdapter extends RecyclerView.Adapter<TodayItemsAdapter.ViewHolder>{
 
     private Context mContext;
     private List<Data> myDataList;
-
+    private String postid;
+    private String note;
+    private int amount;
+    private String item;
 
     public TodayItemsAdapter(Context mContext, List<Data> myDataList) {
         this.mContext = mContext;
@@ -52,8 +59,95 @@ public class TodayItemsAdapter extends RecyclerView.Adapter<TodayItemsAdapter.Vi
         holder.date.setText("Дата: "+data.getDate());
         holder.notes.setText("Заметка: "+data.getNotes());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                postid = data.getId();
+                note = data.getNotes();
+                amount = data.getAmount();
+                item = data.getItem();
+
+                updateData();
+            }
+        });
+
+    }
+
+    private void updateData() {
+        AlertDialog.Builder myDialog = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View myView = inflater.inflate(R.layout.update_layout, null);
+
+        myDialog.setView(myView);
+
+        final AlertDialog dialog = myDialog.create();
+
+        final  TextView mItem = myView.findViewById(R.id.item);
+        final EditText mAmount = myView.findViewById(R.id.amount);
+        final EditText mNote = myView.findViewById(R.id.note);
+
+        mItem.setText(item);
+
+        mAmount.setText(String.valueOf(amount));
+        mAmount.setSelection(String.valueOf(amount).length());
+
+        mNote.setText(note);
+        mNote.setSelection(note.length());
+
+        Button updateBtn  = myView.findViewById(R.id.update);
+        Button deleteBtn = myView.findViewById(R.id.delete);
+
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                amount = Integer.parseInt(mAmount.getText().toString());
+                note = mNote.getText().toString();
+
+                DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                Calendar cal = Calendar.getInstance();
+                String date = dateFormat.format(cal.getTime());
+
+                Data data = new Data(item, date,postid, note, amount);
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("expenses").child(FirebaseAuth.getInstance().getCurrentUser().getUid()
+                );
+                reference.child(postid).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(mContext, "Успешно обновлено", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(mContext, "failed " +task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                dialog.dismiss();
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("expenses").child(FirebaseAuth.getInstance().getCurrentUser().getUid()
+                );
+                reference.child(postid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(mContext, "Успешно удалено", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(mContext, "failed to delete " +task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                dialog.dismiss();
+
+            }
+        });
 
 
+        dialog.show();
     }
 
 

@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         String date = dateFormat.format(cal.getTime());
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("expenses").child(onlineUserId);
-        Query query = reference.orderByChild("date").equalTo(date);
+        Query query = reference;
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

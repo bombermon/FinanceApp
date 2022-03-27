@@ -48,7 +48,7 @@
                 android:id="@+id/amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Введите количество"
+                android:hint="Стоимость"
                 android:textColor="#000"
                 android:inputType="number"
                 android:textColorHint="#808080"/>
