@@ -13,15 +13,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.anychart.AnyChartView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import org.joda.time.DateTime;
+import org.joda.time.Months;
+import org.joda.time.MutableDateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,18 +37,18 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+
+
+
 public class PieActivity extends AppCompatActivity {
 
+    private TextView maintext;
 
-    private TextView amountTxtview;
-    private RecyclerView recyclerView;
     private FirebaseAuth mAuth;
-    private DatabaseReference ref;
+    private DatabaseReference ref, personalRef;
     private String onlineUserId = "";
     private ProgressDialog loader;
-
-    private TodayItemsAdapter todayItemsAdapter;
-    private List<Data> myDataList;
+    private AnyChartView anyChartView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,59 +58,35 @@ public class PieActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Операции");
 
-        amountTxtview = findViewById(R.id.totalAmountSpentTv);
-        recyclerView = findViewById(R.id.recyclerView);
+        maintext = findViewById(R.id.totalspent);
 
+        anyChartView = findViewById(R.id.anyChartView);
         mAuth = FirebaseAuth.getInstance();
         onlineUserId = mAuth.getCurrentUser().getUid();
         ref = FirebaseDatabase.getInstance().getReference().child("expenses").child(onlineUserId);
         loader = new ProgressDialog(this);
+        personalRef = FirebaseDatabase.getInstance().getReference("personal").child(onlineUserId);
 
 
 
 
-        recyclerView = findViewById(R.id.recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        getTotalMonthEntertainmentExpenses();
+        getTotalWeekSpending();
 
-        myDataList = new ArrayList<>();
-        todayItemsAdapter = new TodayItemsAdapter(PieActivity.this, myDataList);
-        recyclerView.setAdapter(todayItemsAdapter);
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
 
-        readItems();
+                    }
+                },
+                2000
+        );
+
     }
 
 
-    private void readItems(){
 
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Calendar cal = Calendar.getInstance();
-        String date = dateFormat.format(cal.getTime());
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("expenses").child(onlineUserId);
-        Query query = reference;
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                myDataList.clear();
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Data data = dataSnapshot.getValue(Data.class);
-                    myDataList.add(data);
-                }
-
-                todayItemsAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
 
     @Override
@@ -120,5 +103,76 @@ public class PieActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void getTotalMonthEntertainmentExpenses(){
+        MutableDateTime epoch = new MutableDateTime();
+        epoch.setDate(0); //Set to Epoch time
+        DateTime now = new DateTime();
+        Months months = Months.monthsBetween(epoch, now);
+
+        String itemNmonth = "Развлечение"+months.getMonths();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("expenses").child(onlineUserId);
+        Query query = reference.orderByChild("itemNmonth").equalTo(itemNmonth);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    int totalAmount = 0;
+                    for (DataSnapshot ds :  snapshot.getChildren()) {
+                        Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                        Object total = map.get("amount");
+                        int pTotal = Integer.parseInt(String.valueOf(total));
+                        totalAmount += pTotal;
+                        maintext.setText("Spent: " + totalAmount);
+                    }
+                    personalRef.child("monthEnt").setValue(totalAmount);
+                }else {
+                    personalRef.child("monthEnt").setValue(0);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(PieActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getTotalWeekSpending(){
+        MutableDateTime epoch = new MutableDateTime();
+        epoch.setDate(0); //Set to Epoch time
+        DateTime now = new DateTime();
+        Months months = Months.monthsBetween(epoch, now);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("expenses").child(onlineUserId);
+        Query query = reference.orderByChild("month").equalTo(months.getMonths());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                    int totalAmount = 0;
+                    for (DataSnapshot ds :  dataSnapshot.getChildren()){
+                        Map<String, Object> map = (Map<String, Object>)ds.getValue();
+                        Object total = map.get("amount");
+                        int pTotal = Integer.parseInt(String.valueOf(total));
+                        totalAmount+=pTotal;
+
+                    }
+                }else {
+                    anyChartView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

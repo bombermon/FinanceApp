@@ -5,14 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#0000ff"
+
    >
 
 
 
+    <TextView
+        android:id="@+id/totalspent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="vova"
+        />
 
     <com.anychart.AnyChartView
-        android:id="@+id/any_chart_view"
+        android:id="@+id/anyChartView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

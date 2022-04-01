@@ -1,19 +1,25 @@
 package com.veselovski.financeapp;
 
 public class Data {
-
-    private String item, date, id, notes;
-    private int amount;
+    String item,date,id,itemNday,itemNweek,itemNmonth;
+    int amount,week,month;
+    String notes;
 
     public Data() {
     }
 
-    public Data(String item, String date, String id, String notes, int amount) {
+    public Data(String item, String date, String id, String itemNday, String itemNweek,
+                String itemNmonth, int amount, int week, int month, String notes) {
         this.item = item;
         this.date = date;
         this.id = id;
-        this.notes = notes;
+        this.itemNday = itemNday;
+        this.itemNweek = itemNweek;
+        this.itemNmonth = itemNmonth;
         this.amount = amount;
+        this.week = week;
+        this.month = month;
+        this.notes = notes;
     }
 
     public String getItem() {
@@ -40,12 +46,28 @@ public class Data {
         this.id = id;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getItemNday() {
+        return itemNday;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setItemNday(String itemNday) {
+        this.itemNday = itemNday;
+    }
+
+    public String getItemNweek() {
+        return itemNweek;
+    }
+
+    public void setItemNweek(String itemNweek) {
+        this.itemNweek = itemNweek;
+    }
+
+    public String getItemNmonth() {
+        return itemNmonth;
+    }
+
+    public void setItemNmonth(String itemNmonth) {
+        this.itemNmonth = itemNmonth;
     }
 
     public int getAmount() {
@@ -54,5 +76,29 @@ public class Data {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

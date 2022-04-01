@@ -20,6 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.joda.time.DateTime;
+import org.joda.time.Months;
+import org.joda.time.MutableDateTime;
+import org.joda.time.Weeks;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -107,7 +112,17 @@ public class TodayItemsAdapter extends RecyclerView.Adapter<TodayItemsAdapter.Vi
                 Calendar cal = Calendar.getInstance();
                 String date = dateFormat.format(cal.getTime());
 
-                Data data = new Data(item, date,postid, note, amount);
+                MutableDateTime epoch = new MutableDateTime();
+                epoch.setDate(0); //Set to Epoch time
+                DateTime now = new DateTime();
+                Weeks weeks = Weeks.weeksBetween(epoch, now);
+                Months months = Months.monthsBetween(epoch,now);
+
+                String itemNday = item+date;
+                String itemNweek = item+weeks.getWeeks();
+                String itemNmonth = item+months.getMonths();
+
+                Data data = new Data(item, date, postid,itemNday,itemNweek,itemNmonth, amount,weeks.getWeeks(), months.getMonths(),note);
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("expenses").child(FirebaseAuth.getInstance().getCurrentUser().getUid()
                 );
                 reference.child(postid).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
