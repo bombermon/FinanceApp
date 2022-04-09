@@ -6,6 +6,10 @@
         <item>Еда</item>
         <item>Транспорт</item>
         <item>Развлечение</item>
+        <item>Интернет</item>
+        <item>Путешествия</item>
+        <item>Одежда</item>
+        <item>Техника</item>
         <item>Другое</item>
     </string-array>
 </resources>

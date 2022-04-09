@@ -178,7 +178,8 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 if (mItem.equalsIgnoreCase("Выберите категорию")){
-                    Toast.makeText(MainActivity.this, "Выберите категорию", Toast.LENGTH_SHORT).show();
+                    ((TextView)itemSpinner.getSelectedView()).setError("Категория не выбрана");
+                    return;
                 }
                 else {
                     loader.setTitle("Добавление операции");
