@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView amountTxtview;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
+    private FloatingActionButton settings;
+
     private FirebaseAuth mAuth;
     private DatabaseReference ref;
     private String onlineUserId = "";
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         amountTxtview = findViewById(R.id.totalAmountSpentTv);
         recyclerView = findViewById(R.id.recyclerView);
         fab = findViewById(R.id.fab);
-
+        settings = findViewById(R.id.settings);
         mAuth = FirebaseAuth.getInstance();
         onlineUserId = mAuth.getCurrentUser().getUid();
         ref = FirebaseDatabase.getInstance().getReference().child("expenses").child(onlineUserId);
@@ -82,6 +84,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addItemSpentOn();
+            }
+        });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -107,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         String date = dateFormat.format(cal.getTime());
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("expenses").child(onlineUserId);
-        Query query = reference;
+        Query query = reference.orderByChild("date").equalTo(date);;
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
