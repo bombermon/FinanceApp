@@ -8,18 +8,34 @@
 
    >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
 
+        >
 
+        <Button
+            android:id="@+id/minus"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="минус"
+            android:textAllCaps="false"
+            android:textColor="#fff" />
 
+        <Button
+            android:id="@+id/plus"
+            android:layout_width="154dp"
+            android:layout_height="wrap_content"
 
-
+            android:text="плюс"
+            android:textAllCaps="false"
+            android:textColor="#fff" />
+    </LinearLayout>
     <com.anychart.AnyChartView
         android:id="@+id/anyChartView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
-
+        android:layout_height="match_parent" />
 
 
 
