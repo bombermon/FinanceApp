@@ -55,7 +55,7 @@ public class AccountActivity extends AppCompatActivity {
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                logedInOn.setText(snapshot.child("logedinon").getValue().toString());
+                logedInOn.setText("Дата входа: " + snapshot.child("logedinon").getValue().toString());
                 name.setText(snapshot.child("name").getValue().toString());
                 email.setText(snapshot.child("email").getValue().toString());
 

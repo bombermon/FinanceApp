@@ -2,6 +2,7 @@ package com.veselovski.financeapp;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,9 +106,23 @@ public class TodayItemsAdapter extends RecyclerView.Adapter<TodayItemsAdapter.Vi
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                amount = Integer.parseInt(mAmount.getText().toString());
+
+                String check = mAmount.getText().toString();
+                if (check.length() > 9){
+                    mAmount.setError("Слишком большое число");
+                    return;
+                }
+
+                amount = Integer.parseInt(check);
                 note = mNote.getText().toString();
 
+
+                if (note.length() > 50){
+                    mNote.setError("Слишком длинная заметка");
+                    return;
+                }
+
+                amount = Integer.parseInt(mAmount.getText().toString());
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                 Calendar cal = Calendar.getInstance();
                 String date = dateFormat.format(cal.getTime());
@@ -121,6 +136,7 @@ public class TodayItemsAdapter extends RecyclerView.Adapter<TodayItemsAdapter.Vi
                 String itemNday = item+date;
                 String itemNweek = item+weeks.getWeeks();
                 String itemNmonth = item+months.getMonths();
+
 
                 Data data = new Data(item, date, postid,itemNday,itemNweek,itemNmonth, amount,weeks.getWeeks(), months.getMonths(),note);
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("expenses").child(FirebaseAuth.getInstance().getCurrentUser().getUid()

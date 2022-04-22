@@ -184,6 +184,14 @@ public class MainActivity extends AppCompatActivity {
                     amount.setError("Необходимо количество");
                     return;
                 }
+                if (mAmount.length() > 9){
+                    amount.setError("Слишком большое число");
+                    return;
+                }
+                if (note.length() > 50){
+                    notes.setError("Слишком длинная заметка");
+                    return;
+                }
                 if (TextUtils.isEmpty(note)){
                     notes.setError("Необходима заметка");
                     return;
