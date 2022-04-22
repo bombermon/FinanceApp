@@ -73,12 +73,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startLoader(){
-        loader.setMessage("Please wait...");
+        loader.setMessage("Пожалуйста, подождите...");
         loader.setCanceledOnTouchOutside(false);
         loader.show();
     }
 
-    //we make a request to create a pop up of all emails signed in in that device. User selects an email.
+
 
     private void createRequest() {
 
@@ -87,14 +87,12 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        //the request is passed to the google sign in client
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
     }
 
-    //innitializing the login process
-    //user selects an email after the button is clicked.
+
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -102,18 +100,15 @@ public class LoginActivity extends AppCompatActivity {
         startLoader();
     }
 
-    //google authenticating the account.
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                //Google returns an account, through the intent
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
@@ -130,7 +125,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
 
                             FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);

@@ -59,10 +59,10 @@ public class TodayItemsAdapter extends RecyclerView.Adapter<TodayItemsAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         final Data data = myDataList.get(position);
-        holder.item.setText("Категория: "+data.getItem());
-        holder.amount.setText("Стоимость: "+data.getAmount() + "₽");
-        holder.date.setText("Дата: "+data.getDate());
-        holder.notes.setText("Заметка: "+data.getNotes());
+        holder.item.setText("Категория: " + data.getItem());
+        holder.amount.setText("Стоимость: " + data.getAmount() + "₽");
+        holder.date.setText("Дата: " + data.getDate());
+        holder.notes.setText("Заметка: " + data.getNotes());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

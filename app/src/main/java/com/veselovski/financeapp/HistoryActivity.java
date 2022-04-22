@@ -2,7 +2,10 @@ package com.veselovski.financeapp;
 
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.anychart.charts.Pie;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -94,15 +98,35 @@ public class HistoryActivity extends AppCompatActivity implements DatePickerDial
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.control){
+            Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+        if (item.getItemId() == R.id.analytics){
+            Intent intent = new Intent(HistoryActivity.this, PieActivity.class);
+            startActivity(intent);
+        }
+        if (item.getItemId() == R.id.account){
+            Intent intent = new Intent(HistoryActivity.this, AccountActivity.class);
+            startActivity(intent);
+        }
+
+        if (item.getItemId() == R.id.about){
+            Intent intent = new Intent(HistoryActivity.this, AboutActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
@@ -128,7 +152,6 @@ public class HistoryActivity extends AppCompatActivity implements DatePickerDial
         }
 
         String date = addday + "-" + addmonth + "-" + year;
-        Toast.makeText(this, date, Toast.LENGTH_SHORT).show();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("expenses").child(onlineUserId);
         Query query = reference.orderByChild("date").equalTo(date);
@@ -151,9 +174,16 @@ public class HistoryActivity extends AppCompatActivity implements DatePickerDial
                     totalAmount += pTotal;
                     if (totalAmount > 0) {
                         historyTotalAmountSpent.setVisibility(View.VISIBLE);
-                        historyTotalAmountSpent.setText(date + " было потрачено: " + totalAmount + " рублей");
+                        historyTotalAmountSpent.setText(date + " было потрачено: " + totalAmount + " ₽");
+                    }
+                    else {
+                        historyTotalAmountSpent.setText(date + " не было трат");
                     }
 
+                }
+                if (totalAmount == 0) {
+                    historyTotalAmountSpent.setVisibility(View.VISIBLE);
+                    historyTotalAmountSpent.setText(date + " не было трат");
                 }
             }
 
@@ -163,4 +193,6 @@ public class HistoryActivity extends AppCompatActivity implements DatePickerDial
             }
         });
     }
+
+
 }

@@ -41,7 +41,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="100dp"
                 android:layout_marginRight="16dp"
-                android:src="@drawable/ic_baseline_settings_24"
+                android:src="@drawable/ic_baseline_history_24"
                 app:backgroundTint="#008080"
                 app:fabSize="normal"
                 tools:ignore="SpeakableTextPresentCheck" />

@@ -2,11 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="My Account"
-        android:id="@+id/account"
+
+    <item android:title="Аналитика"
+        android:id="@+id/analytics"
         />
-    <item android:title="analytics"
-        android:id="@+id/analitcs"
+    <item android:title="Список операций"
+        android:id="@+id/control"
+        />
+    <item android:title="Аккаунт"
+    android:id="@+id/account"
+    />
+    <item android:title="Об авторе"
+        android:id="@+id/about"
         />
 
 </menu>

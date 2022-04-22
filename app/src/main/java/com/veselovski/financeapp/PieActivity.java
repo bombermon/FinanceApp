@@ -184,8 +184,17 @@ public class PieActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.account){
+        if (item.getItemId() == R.id.control){
             Intent intent = new Intent(PieActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+        if (item.getItemId() == R.id.account){
+            Intent intent = new Intent(PieActivity.this, AccountActivity.class);
+            startActivity(intent);
+        }
+
+        if (item.getItemId() == R.id.about){
+            Intent intent = new Intent(PieActivity.this, AboutActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -452,7 +461,7 @@ public class PieActivity extends AppCompatActivity {
                     pie.data(data);
 
                     DateTime now = new DateTime().minusMonths(minus);
-                    String titlemonth = now.toString("MMMM", new Locale("ru"));
+                    String titlemonth = now.toString("MMMM Y", new Locale("ru"));
                     pie.title("Аналитика " + titlemonth);
 
                     pie.labels().position("inside");

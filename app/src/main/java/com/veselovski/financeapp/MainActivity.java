@@ -252,10 +252,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.analitcs){
+        if (item.getItemId() == R.id.analytics){
             Intent intent = new Intent(MainActivity.this, PieActivity.class);
             startActivity(intent);
         }
+        if (item.getItemId() == R.id.account){
+            Intent intent = new Intent(MainActivity.this, AccountActivity.class);
+            startActivity(intent);
+        }
+
+        if (item.getItemId() == R.id.about){
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 
