@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -59,7 +60,7 @@ public class PieActivity extends AppCompatActivity {
     private Button minus;
     private Button plus;
     private Pie pie;
-    private boolean flag = true;
+    public static boolean pieflag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +93,16 @@ public class PieActivity extends AppCompatActivity {
         getTotalMonthExpenses("Другое", "monthOth", minusmonth);
 
         getTotalMonthSpending(minusmonth);
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        loadGraph();
+                    }
+                },
+                2000
+        );
 
-        loadGraph();
 
         anyChartView.setChart(pie);
 
@@ -103,8 +112,8 @@ public class PieActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 countermonth ++;
-                System.out.println(flag);
-                Toast.makeText(PieActivity.this, countermonth.toString(), Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(PieActivity.this, "Загрузка...", Toast.LENGTH_SHORT).show();
                 getTotalMonthExpenses("Еда", "monthFood", countermonth);
                 getTotalMonthExpenses("Транспорт", "monthTran", countermonth);
                 getTotalMonthExpenses("Развлечения", "monthEnt", countermonth);
@@ -119,7 +128,7 @@ public class PieActivity extends AppCompatActivity {
                         new java.util.TimerTask() {
                             @Override
                             public void run() {
-                                reloadGraph();
+                                reloadGraph(countermonth);
                             }
                         },
                         2000
@@ -133,7 +142,7 @@ public class PieActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 countermonth --;
-                Toast.makeText(PieActivity.this, countermonth.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PieActivity.this, "Загрузка...", Toast.LENGTH_LONG).show();
 
                 getTotalMonthExpenses("Еда", "monthFood", countermonth);
                 getTotalMonthExpenses("Транспорт", "monthTran", countermonth);
@@ -149,7 +158,7 @@ public class PieActivity extends AppCompatActivity {
                         new java.util.TimerTask() {
                             @Override
                             public void run() {
-                                reloadGraph();
+                                reloadGraph(countermonth);
                             }
                         },
                         2000
@@ -185,12 +194,10 @@ public class PieActivity extends AppCompatActivity {
 
     private void getTotalMonthExpenses(String name, String addition, Integer minus){
         MutableDateTime epoch = new MutableDateTime();
-        epoch.setDate(0); //Set to Epoch time
+        epoch.setDate(0);
         DateTime now = new DateTime().minusMonths(minus);
         Months months = Months.monthsBetween(epoch, now);
-        System.out.println(now);
-        System.out.println(epoch);
-        System.out.println(months);
+
 
 
         String itemNmonth = name+months.getMonths();
@@ -264,76 +271,76 @@ public class PieActivity extends AppCompatActivity {
         personalRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (flag) {
-                    if (snapshot.exists()) {
+                if (pieflag) {
+                if (snapshot.exists()) {
 
-                        int traTotal;
-                        if (snapshot.hasChild("monthTran")) {
-                            traTotal = Integer.parseInt(snapshot.child("monthTran").getValue().toString());
-                        } else {
-                            traTotal = 0;
-                        }
+                    int traTotal;
+                    if (snapshot.hasChild("monthTran")) {
+                        traTotal = Integer.parseInt(snapshot.child("monthTran").getValue().toString());
+                    } else {
+                        traTotal = 0;
+                    }
 
-                        int foodTotal;
-                        if (snapshot.hasChild("monthFood")) {
-                            foodTotal = Integer.parseInt(snapshot.child("monthFood").getValue().toString());
-                        } else {
-                            foodTotal = 0;
-                        }
+                    int foodTotal;
+                    if (snapshot.hasChild("monthFood")) {
+                        foodTotal = Integer.parseInt(snapshot.child("monthFood").getValue().toString());
+                    } else {
+                        foodTotal = 0;
+                    }
 
-                        int entTotal;
-                        if (snapshot.hasChild("monthEnt")) {
-                            entTotal = Integer.parseInt(snapshot.child("monthEnt").getValue().toString());
-                        } else {
-                            entTotal = 0;
-                        }
+                    int entTotal;
+                    if (snapshot.hasChild("monthEnt")) {
+                        entTotal = Integer.parseInt(snapshot.child("monthEnt").getValue().toString());
+                    } else {
+                        entTotal = 0;
+                    }
 
-                        int intTotal;
-                        if (snapshot.hasChild("monthInt")) {
-                            intTotal = Integer.parseInt(snapshot.child("monthInt").getValue().toString());
-                        } else {
-                            intTotal = 0;
-                        }
+                    int intTotal;
+                    if (snapshot.hasChild("monthInt")) {
+                        intTotal = Integer.parseInt(snapshot.child("monthInt").getValue().toString());
+                    } else {
+                        intTotal = 0;
+                    }
 
-                        int TravTotal;
-                        if (snapshot.hasChild("monthTravel")) {
-                            TravTotal = Integer.parseInt(snapshot.child("monthTravel").getValue().toString());
-                        } else {
-                            TravTotal = 0;
-                        }
-
-
-                        int CloTotal;
-                        if (snapshot.hasChild("monthClo")) {
-                            CloTotal = Integer.parseInt(snapshot.child("monthClo").getValue().toString());
-                        } else {
-                            CloTotal = 0;
-                        }
-
-                        int TechTotal;
-                        if (snapshot.hasChild("monthTech")) {
-                            TechTotal = Integer.parseInt(snapshot.child("monthTech").getValue().toString());
-                        } else {
-                            TechTotal = 0;
-                        }
-
-                        int othTotal;
-                        if (snapshot.hasChild("monthOth")) {
-                            othTotal = Integer.parseInt(snapshot.child("monthOth").getValue().toString());
-                        } else {
-                            othTotal = 0;
-                        }
+                    int TravTotal;
+                    if (snapshot.hasChild("monthTravel")) {
+                        TravTotal = Integer.parseInt(snapshot.child("monthTravel").getValue().toString());
+                    } else {
+                        TravTotal = 0;
+                    }
 
 
-                        List<DataEntry> data = new ArrayList<>();
-                        data.add(new ValueDataEntry("Транспорт", traTotal));
-                        data.add(new ValueDataEntry("Еда", foodTotal));
-                        data.add(new ValueDataEntry("Развлечение", entTotal));
-                        data.add(new ValueDataEntry("Интернет", intTotal));
-                        data.add(new ValueDataEntry("Путешествия", TravTotal));
-                        data.add(new ValueDataEntry("Одежда", CloTotal));
-                        data.add(new ValueDataEntry("Техника", TechTotal));
-                        data.add(new ValueDataEntry("Другое", othTotal));
+                    int CloTotal;
+                    if (snapshot.hasChild("monthClo")) {
+                        CloTotal = Integer.parseInt(snapshot.child("monthClo").getValue().toString());
+                    } else {
+                        CloTotal = 0;
+                    }
+
+                    int TechTotal;
+                    if (snapshot.hasChild("monthTech")) {
+                        TechTotal = Integer.parseInt(snapshot.child("monthTech").getValue().toString());
+                    } else {
+                        TechTotal = 0;
+                    }
+
+                    int othTotal;
+                    if (snapshot.hasChild("monthOth")) {
+                        othTotal = Integer.parseInt(snapshot.child("monthOth").getValue().toString());
+                    } else {
+                        othTotal = 0;
+                    }
+
+
+                    List<DataEntry> data = new ArrayList<>();
+                    data.add(new ValueDataEntry("Транспорт", traTotal));
+                    data.add(new ValueDataEntry("Еда", foodTotal));
+                    data.add(new ValueDataEntry("Развлечение", entTotal));
+                    data.add(new ValueDataEntry("Интернет", intTotal));
+                    data.add(new ValueDataEntry("Путешествия", TravTotal));
+                    data.add(new ValueDataEntry("Одежда", CloTotal));
+                    data.add(new ValueDataEntry("Техника", TechTotal));
+                    data.add(new ValueDataEntry("Другое", othTotal));
 
 
                         pie.data(data);
@@ -351,12 +358,12 @@ public class PieActivity extends AppCompatActivity {
                                 .position("center-bottom")
                                 .itemsLayout(LegendLayout.HORIZONTAL)
                                 .align(Align.CENTER);
-                        flag = false;
+                        pieflag = false;
 
-                    } else {
-                        Toast.makeText(PieActivity.this, "Child does not exist", Toast.LENGTH_SHORT).show();
-                    }
+                } else {
+                    Toast.makeText(PieActivity.this, "Child does not exist", Toast.LENGTH_SHORT).show();
                 }
+            }
             }
 
             @Override
@@ -366,7 +373,7 @@ public class PieActivity extends AppCompatActivity {
         });
     }
 
-    private void reloadGraph(){
+    private void reloadGraph(int minus){
         personalRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -444,7 +451,9 @@ public class PieActivity extends AppCompatActivity {
 
                     pie.data(data);
 
-                    pie.title("Аналитика текущего месяца");
+                    DateTime now = new DateTime().minusMonths(minus);
+                    String titlemonth = now.toString("MMMM", new Locale("ru"));
+                    pie.title("Аналитика " + titlemonth);
 
                     pie.labels().position("inside");
 
