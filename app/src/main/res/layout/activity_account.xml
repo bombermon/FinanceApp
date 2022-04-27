@@ -67,6 +67,7 @@
         android:textAllCaps="false"
         android:background="#000000"
         android:textColor="#ffffff"
+        app:backgroundTint="#008080"
         android:textSize="20sp"
         android:layout_margin="20dp"/>
 

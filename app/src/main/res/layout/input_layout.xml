@@ -84,7 +84,8 @@
                     android:text="Отмена"
                     android:textAllCaps="false"
                     android:textColor="#fff"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:backgroundTint="#008080" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -100,7 +101,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="2dp"
                     android:layout_marginBottom="2dp"
-
+                    app:backgroundTint="#008080"
                     android:text="Добавить"
                     android:textAllCaps="false"
                     android:textColor="#fff"
